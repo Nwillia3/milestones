@@ -1,10 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Moment from "react-moment";
 
 const style = {
   display: "flex",
   padding: "20apx",
-  flexDirection: "row"
+  flexDirection: "column"
 };
 
 const styleH1 = {
@@ -22,6 +23,8 @@ const Milestone = ({ milestones }) => {
       <div key={ms.title} style={styleH1}>
         <h1> {ms.title}</h1>
         <p>{ms.description}</p>
+        <p>{ms.date}</p>
+        <Moment format="YYYY/MM/DD">{ms.date}</Moment>
       </div>
     ));
   }
