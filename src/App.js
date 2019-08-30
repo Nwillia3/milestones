@@ -1,8 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Landing from "./component/Landing";
-import "./Product.css";
-import "./index.css";
 import Product from "./component/Product";
 
 function App() {

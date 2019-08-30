@@ -1,4 +1,5 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+With help from [cra-tailwindcss](https://github.com/kriswep/cra-tailwindcss)
 
 ## Available Scripts
 
