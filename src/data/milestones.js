@@ -6,13 +6,15 @@ export const getMileStones = () => {
   return Store.getMileStones();
 };
 
+const STORAGE_NAME = "mileStones"
+
 class Store {
   static getMileStones() {
     let mileStones;
-    if (localStorage.getItem("mileStones") === null) {
+    if (localStorage.getItem(STORAGE_NAME) === null) {
       mileStones = [];
     } else {
-      mileStones = JSON.parse(localStorage.getItem("mileStones"));
+      mileStones = JSON.parse(localStorage.getItem(STORAGE_NAME));
     }
     return mileStones;
   }
@@ -20,7 +22,7 @@ class Store {
   static addMileStone(mileStone) {
     const mileStones = Store.getMileStones();
     mileStones.push(mileStone);
-    localStorage.setItem("mileStones", JSON.stringify(mileStones));
+    localStorage.setItem(STORAGE_NAME, JSON.stringify(mileStones));
   }
 
   static removeMileStone(title) {
@@ -31,6 +33,6 @@ class Store {
       }
     });
 
-    JSON.parse(localStorage.setItem("mileStones", mileStones));
+    JSON.parse(localStorage.setItem(STORAGE_NAME, mileStones));
   }
 }
