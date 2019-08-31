@@ -3,7 +3,7 @@ import uuid from "uuid/v1";
 import Moment from "react-moment";
 import { getMileStones, addMileStone } from "../data/milestones";
 
-function Product() {
+function Home() {
   const [data, setData] = useState(getMileStones());
 
   const [toggleData, setToggleData] = useState(true);
@@ -173,4 +173,4 @@ function Product() {
   );
 }
 
-export default Product;
+export default Home;
