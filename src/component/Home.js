@@ -31,7 +31,7 @@ function Home() {
     )
 
     let entry = { 
-
+      id: formValues.id,
       title: formValues.milestoneTitle,
       description: formValues.milestoneDescription,
   
