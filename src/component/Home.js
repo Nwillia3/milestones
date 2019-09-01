@@ -2,26 +2,61 @@ import React, { useState } from "react";
 import uuid from "uuid/v1";
 import Moment from "react-moment";
 import { getMileStones, addMileStone } from "../data/milestones";
+import { generateDays, generateMonths, generateYears } from "./DateOptions"
 import classNames from "classnames"
 
 function Home() {
   const [data, setData] = useState(getMileStones());
 
   const [formData, setFormData] = useState({
-    id: `${uuid()} + ${Math.random()}`,
+    id: `${uuid()}`,
+
     title: "",
     description: "",
-    date: Date.now()
+
+    milestoneMonth: "",
+    milestoneDay: "",
+    milestoneYear: "",
+
+    createdAt: Date.now(),
   });
 
+
+  const createMilestone = (formValues) => {
+
+    let milestoneStartDate = new Date(
+      formValues.milestoneYear,
+      formValues.milestoneMonth,
+      formValues.milestoneDay
+    )
+
+    let entry = { 
+
+      title: formValues.milestoneTitle,
+      description: formValues.milestoneDescription,
+  
+      startDate: milestoneStartDate,
+      endDate: null,
+      status: 0,
+  
+      createdAt: formValues.createdAt,
+    }
+
+    return entry
+
+  }
+
   const onChange = e => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ 
+      ...formData, 
+      [e.target.name]: e.target.value 
+    });
   };
 
   const onSubmit = e => {
     e.preventDefault();
-
-    addMileStone(formData);
+    
+    addMileStone(createMilestone(formData));
 
     setData(getMileStones());
   };
@@ -40,7 +75,7 @@ function Home() {
         <div>
           <div class="px-6 py-4">
             <div class="py-4 font-thin">
-              <Moment format="YYYY/MM/DD">{milestone.date}</Moment>
+              <Moment format="YYYY-MM-DD">{milestone.startDate}</Moment>
             </div>
 
             <div class="font-bold text-xl mb-2">
@@ -60,10 +95,56 @@ function Home() {
 
       </div>
 
-
   ));
 
-  displayData = displayData.reverse()
+  displayData = displayData.sort((a, b) => {
+    return new Date(b.startDate) - new Date(a.startDate);
+  })
+
+  const MonthOptions = () => {
+    let data = generateMonths()
+
+    return (
+        <select
+          name="milestoneMonth"
+          onChange={e => onChange(e)}
+          class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+            {data.map(obj => (
+                <option key={obj.value} value={obj.value}>{obj.name}</option>
+            ))}
+        </select>
+    )
+  }
+
+  const DayOptions = () => {
+    let data = generateDays()
+
+    return (
+        <select
+          name="milestoneDay"
+          onChange={e => onChange(e)}
+          class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+            {data.map(obj => (
+                <option key={obj.value} value={obj.value}>{obj.name}</option>
+            ))}
+        </select>
+    )  
+  }
+
+  const YearOptions = () => {
+      let data = generateYears(1920, 2020)
+
+      return (
+          <select
+            name="milestoneYear"
+            onChange={e => onChange(e)}
+            class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+              {data.map(obj => (
+                  <option key={obj.value} value={obj.value}>{obj.name}</option>
+              ))}
+          </select>
+      )  
+  }
 
   return (
     <div>
@@ -93,11 +174,7 @@ function Home() {
                 Month
               </label>
               <div class="relative">
-                <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                </select>
+                {MonthOptions()}
                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                   <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                 </div>
@@ -108,11 +185,7 @@ function Home() {
                 Day
               </label>
               <div class="relative">
-                <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                </select>
+                {DayOptions()}
                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                   <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                 </div>
@@ -124,11 +197,7 @@ function Home() {
                 Year
               </label>
               <div class="relative">
-                <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-                  <option>2019</option>
-                  <option>2018</option>
-                  <option>2017</option>
-                </select>
+                {YearOptions()}
                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                   <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                 </div>
@@ -141,9 +210,9 @@ function Home() {
                 Goal
               </label>
               <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
-                id="goal-title" 
+                id="milestoneTitle" 
                 type="text"
-                name="title"
+                name="milestoneTitle"
                 onChange={e => onChange(e)}
                 placeholder="What do you want to accomplish?" />
             </div>
@@ -153,9 +222,9 @@ function Home() {
                 Description
               </label>
               <textarea class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
-                id="goal-description" 
+                id="milestoneDescription" 
                 type="text"
-                name="description"
+                name="milestoneDescription"
                 onChange={e => onChange(e)}
                 placeholder="How will you accomplish this? Why do you want to do this?" 
               ></textarea>
