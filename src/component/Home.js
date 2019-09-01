@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import uuid from "uuid/v1";
 import Moment from "react-moment";
 import { getMileStones, addMileStone } from "../data/milestones";
+import classNames from "classnames"
 
 function Home() {
   const [data, setData] = useState(getMileStones());
-
-  const [toggleData, setToggleData] = useState(true);
 
   const [formData, setFormData] = useState({
     id: `${uuid()} + ${Math.random()}`,
@@ -27,42 +26,44 @@ function Home() {
     setData(getMileStones());
   };
 
-  // get a sort by date
-  const sortByDate = () => {
-    let mileStones = data;
-
-    toggleData
-      ? (mileStones = data.sort((a, b) => (a.date < b.date ? 1 : -1)))
-      : (mileStones = data.sort((a, b) => (a.date > b.date ? 1 : -1)));
-    setToggleData(!toggleData);
-  };
-
-
-  if (data === null || data === undefined || !data) {
-    displayData = [];
-  }
+  let circleStatus = classNames({
+    'bg-teal-400': true
+  })
   
   let displayData = data.map(milestone => (
-    <div key={milestone.title} class="max-w-sm mx-auto my-10 rounded overflow-hidden shadow-lg">
-      <div class="px-6 py-4">
-        <div class="py-4 font-thin">
-          <Moment format="YYYY/MM/DD">{milestone.date}</Moment>
+      <div 
+        key={milestone.description}
+        class="flex max-w-md mx-auto my-10 rounded overflow-hidden">
+
+        <div 
+          class={`px-4 mx-2 mt-8 rounded-full h-8 w-8 border border-gray-500 ${circleStatus}`}></div>
+        <div>
+          <div class="px-6 py-4">
+            <div class="py-4 font-thin">
+              <Moment format="YYYY/MM/DD">{milestone.date}</Moment>
+            </div>
+
+            <div class="font-bold text-xl mb-2">
+              {milestone.title}
+            </div>
+            <p class="text-gray-700 text-base">
+              {milestone.description}
+            </p>
+          </div>
+          <div class="px-6 py-4">
+            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#photography</span>
+            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#travel</span>
+            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">#winter</span>
+          </div>
+
         </div>
 
-        <div class="font-bold text-xl mb-2">
-          {milestone.title}
-        </div>
-        <p class="text-gray-700 text-base">
-          {milestone.description}
-        </p>
       </div>
-      <div class="px-6 py-4">
-        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#photography</span>
-        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#travel</span>
-        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">#winter</span>
-      </div>
-    </div>
+
+
   ));
+
+  displayData = displayData.reverse()
 
   return (
     <div>
