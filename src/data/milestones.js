@@ -2,6 +2,10 @@ export const addMileStone = mileStone => {
   Store.addMileStone(mileStone);
 };
 
+export const removeMileStone = mileStone => {
+  Store.removeMileStone(mileStone);
+};
+
 export const getMileStones = () => {
   return Store.getMileStones();
 };
@@ -20,19 +24,24 @@ class Store {
   }
 
   static addMileStone(mileStone) {
-    const mileStones = Store.getMileStones();
+    let mileStones = Store.getMileStones();
     mileStones.push(mileStone);
+
+    mileStones = mileStones.sort((a, b) => {
+      return new Date(b.startDate) - new Date(a.startDate);
+    })
+
     localStorage.setItem(STORAGE_NAME, JSON.stringify(mileStones));
   }
 
-  static removeMileStone(title) {
-    const mileStones = Store.getBooks();
-    mileStones.forEach((mileStone, index) => {
-      if (mileStone.title === title) {
-        mileStones.splice(index, 1);
-      }
-    });
+  static removeMileStone(idx) {
+    let mileStones = Store.getMileStones();
+    mileStones.splice(idx, 1);
 
-    JSON.parse(localStorage.setItem(STORAGE_NAME, mileStones));
+    mileStones = mileStones.sort((a, b) => {
+      return new Date(b.startDate) - new Date(a.startDate);
+    })
+    localStorage.setItem(STORAGE_NAME, JSON.stringify(mileStones));
   }
+
 }

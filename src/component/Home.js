@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import uuid from "uuid/v1";
 import Moment from "react-moment";
-import { getMileStones, addMileStone } from "../data/milestones";
+import { getMileStones, addMileStone, removeMileStone } from "../data/milestones";
 import { generateDays, generateMonths, generateYears } from "./DateOptions"
 import classNames from "classnames"
 
@@ -61,46 +61,6 @@ function Home() {
     setData(getMileStones());
   };
 
-  let circleStatus = classNames({
-    'bg-teal-400': true
-  })
-  
-  let displayData = data.map(milestone => (
-      <div 
-        key={milestone.description}
-        class="flex max-w-md mx-auto my-10 rounded overflow-hidden">
-
-        <div 
-          class={`px-4 mx-2 mt-8 rounded-full h-8 w-8 border border-gray-500 ${circleStatus}`}></div>
-        <div>
-          <div class="px-6 py-4">
-            <div class="py-4 font-thin">
-              <Moment format="YYYY-MM-DD">{milestone.startDate}</Moment>
-            </div>
-
-            <div class="font-bold text-xl mb-2">
-              {milestone.title}
-            </div>
-            <p class="text-gray-700 text-base">
-              {milestone.description}
-            </p>
-          </div>
-          <div class="px-6 py-4">
-            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#photography</span>
-            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#travel</span>
-            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">#winter</span>
-          </div>
-
-        </div>
-
-      </div>
-
-  ));
-
-  displayData = displayData.sort((a, b) => {
-    return new Date(b.startDate) - new Date(a.startDate);
-  })
-
   const MonthOptions = () => {
     let data = generateMonths()
 
@@ -145,6 +105,81 @@ function Home() {
           </select>
       )  
   }
+
+
+  const getMilestoneById = (id, milestones) => {
+    let idx = milestones.findIndex(obj => obj.id === id)
+    return idx
+  }
+
+
+  const handleMilestoneStatusUpdate = (milestone, data) => {
+
+    let allMilestones = getMileStones()
+    let idx = getMilestoneById(milestone.id, allMilestones)
+
+    let updatedMilestone = data[idx]
+    let status = milestone.status === 0 ? 1 : 0
+    updatedMilestone.status = status
+
+    removeMileStone(idx)
+    addMileStone(updatedMilestone)
+
+    setData(getMileStones());
+  }
+
+
+  const generateDisplayData = (milestones) => {
+
+
+    let displayData = milestones.map(milestone => {
+      let circleStatus = classNames({
+        'bg-teal-400': milestone.status === 1 ? true : false
+      })
+  
+      
+      return (
+        <div 
+          key={milestone.id}
+          class="flex max-w-md mx-auto my-10 rounded overflow-hidden">
+
+          <div 
+            onClick={() => handleMilestoneStatusUpdate(milestone, data)}
+            class={`px-4 mx-2 mt-8 rounded-full h-8 w-8 border border-gray-500 ${circleStatus}`}></div>
+          <div>
+            <div class="px-6 py-4">
+              <div class="py-4 font-thin">
+                <Moment format="YYYY-MM-DD">{milestone.startDate}</Moment>
+              </div>
+
+              <div class="font-bold text-xl mb-2">
+                {milestone.title}
+              </div>
+              <p class="text-gray-700 text-base">
+                {milestone.description}
+              </p>
+            </div>
+            <div class="px-6 py-4">
+              <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#photography</span>
+              <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#travel</span>
+              <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">#winter</span>
+            </div>
+
+          </div>
+
+        </div>
+      )
+
+    })
+  
+
+    // displayData = displayData.sort((a, b) => {
+    //   return new Date(b.startDate) - new Date(a.startDate);
+    // })
+
+    return displayData
+  }
+
 
   return (
     <div>
@@ -237,7 +272,7 @@ function Home() {
       </div>
 
       <div class="container mx-auto my-8 w-full">
-        {displayData}
+        {generateDisplayData(getMileStones())}
       </div>
     </div>
   );
