@@ -2,35 +2,46 @@ export const addMileStone = mileStone => {
   Store.addMileStone(mileStone);
 };
 
+export const removeMileStone = mileStone => {
+  Store.removeMileStone(mileStone);
+};
+
 export const getMileStones = () => {
   return Store.getMileStones();
 };
 
+const STORAGE_NAME = "mileStones"
+
 class Store {
   static getMileStones() {
     let mileStones;
-    if (localStorage.getItem("mileStones") === null) {
+    if (localStorage.getItem(STORAGE_NAME) === null) {
       mileStones = [];
     } else {
-      mileStones = JSON.parse(localStorage.getItem("mileStones"));
+      mileStones = JSON.parse(localStorage.getItem(STORAGE_NAME));
     }
     return mileStones;
   }
 
   static addMileStone(mileStone) {
-    const mileStones = Store.getMileStones();
+    let mileStones = Store.getMileStones();
     mileStones.push(mileStone);
-    localStorage.setItem("mileStones", JSON.stringify(mileStones));
+
+    mileStones = mileStones.sort((a, b) => {
+      return new Date(b.startDate) - new Date(a.startDate);
+    })
+
+    localStorage.setItem(STORAGE_NAME, JSON.stringify(mileStones));
   }
 
-  static removeMileStone(title) {
-    const mileStones = Store.getBooks();
-    mileStones.forEach((mileStone, index) => {
-      if (mileStone.title === title) {
-        mileStones.splice(index, 1);
-      }
-    });
+  static removeMileStone(idx) {
+    let mileStones = Store.getMileStones();
+    mileStones.splice(idx, 1);
 
-    JSON.parse(localStorage.setItem("mileStones", mileStones));
+    mileStones = mileStones.sort((a, b) => {
+      return new Date(b.startDate) - new Date(a.startDate);
+    })
+    localStorage.setItem(STORAGE_NAME, JSON.stringify(mileStones));
   }
+
 }
