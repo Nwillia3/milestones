@@ -1,5 +1,28 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-With help from [cra-tailwindcss](https://github.com/kriswep/cra-tailwindcss)
+## Resources
+Links I used to help configure the app
+
+- This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- With help from [cra-tailwindcss](https://github.com/kriswep/cra-tailwindcss)
+
+- https://stackoverflow.com/questions/37482366/is-it-safe-to-expose-firebase-apikey-to-the-public
+
+- https://github.com/bmcmahen/julienne
+- https://benmcmahen.com/using-firebase-with-react-hooks/
+
+- https://medium.com/simply/state-management-with-react-hooks-and-context-api-at-10-lines-of-code-baf6be8302c
+
+- https://www.robinwieruch.de/complete-firebase-authentication-react-tutorial
+- https://www.robinwieruch.de/react-firebase-realtime-database
+
+- https://github.com/the-road-to-react-with-firebase/react-firebase-authentication/blob/master/src/components/Firebase/firebase.js
+
+- https://github.com/fbeline/design-patterns-JS/blob/master/src/creational/singleton/singleton_es6.js
+
+- https://codedaily.io/tutorials/59/Create-a-componentDidMount-useEffect-hook-in-React
+- https://github.com/firebase/firebaseui-web
+
+- https://codesandbox.io/s/101rzp1lpj?from-embed
+
 
 ## Available Scripts
 
