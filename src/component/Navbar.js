@@ -31,7 +31,7 @@ const Navbar = () => {
                     <Link to="/login" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
                         Sign up
                     </Link>
-                    <Link to="/therightjawn" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+                    <Link to="/nodox" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
                         Dashboard
                     </Link>
                     <a onClick={logout} to="/signin" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
